@@ -34,7 +34,7 @@ class Transparencia
 
     // adicionei aqui a função de consulta de licitações
     public function searchLicitacao( string $dataInicial, String $dataFinal, string $siafiCityCode, int $page)
-    {
+    {   
         $response = $this->request('GET', '/licitacoes', [
             'dataInicial' => $dataInicial,
             'dataFinal' => $dataFinal,

@@ -22,7 +22,8 @@ class LicitacaoLoader implements FixtureInterface
     private $codigoSiafi;
     private $codigoIbge;
 
-    public function __construct( Transparencia $t, $codSiafi, array $anos, $diaInicio, $diaFim, $codigoIbge) 
+    public function __construct( Transparencia $t, $codSiafi, array $anos, $diaInicio, $diaFim, 
+            $codigoIbge) 
     {
         $this->transparencia = $t;
         $this->codigoSiafi = $codSiafi;
@@ -106,16 +107,14 @@ class LicitacaoLoader implements FixtureInterface
 
 private function instanceateLicitacao(array $resultado, $municipio){
         
-        //$dataReferencia =  DateTime::createFromFormat('d/m/Y', $resultado['dataReferencia']);
         $dataReferencia = $resultado['dataReferencia'];
         $nomeOrgao = $resultado['nomeOrgao'];
 
         $codigoOrgao = $resultado['codigoSIAFI'];
 
-        //$dataPublicacao = DateTime::createFromFormat('d/m/y',$resultado['dataPublicacao']);
         $dataPublicacao = $resultado['dataPublicacao'];
 
-        //$dataResultadoCompra =  DateTime::createFromFormat('d/m/y',$resultado['dataResultadoCompra']);
+        
         $dataResultadoCompra = $resultado['dataResultadoCompra'];
         $objetoLicitacao = $resultado['objetoLiciatacao'];
         $numeroLicitacao = $resultado['numeroLicitacao'];
