@@ -1,0 +1,9 @@
+parameters:
+    autoload_files:
+        - vendor/autoload.php
+    reportUnmatchedIgnoredErrors: false
+    level: 1
+    ignoreErrors:
+        - '#.*expects.*, object given#'
+    paths:
+        - %rootDir%/../../../src

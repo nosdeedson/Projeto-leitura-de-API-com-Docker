@@ -1,0 +1,42 @@
+version: '3.1'
+
+volumes:
+    prova-incluir2019-db-volume:
+        driver: local
+
+services:
+    mysql:
+        image: mysql:5.7.22
+        container_name: incluir2019-sql
+        environment:
+            - MYSQL_DATABASE=provaincluir2019
+            - MYSQL_USER=provaincluir2019
+            - MYSQL_PASSWORD=provaincluir2019
+            - MYSQL_ROOT_PASSWORD=provaincluir2019
+            - TZ=America/Sao_Paulo
+        volumes:
+            - prova-incluir2019-db-volume:/var/lib/mysql
+        working_dir: /srv/vhosts/phpApp
+        ports:
+            - 13307:3306
+
+    php:
+        image: ambientum/php:7.3-nginx
+        container_name: incluir2019-php
+        environment:
+            - DEV_MODE=1
+            - DB_HOST=mysql
+            - DB_PORT=3306
+            - DB_NAME=provaincluir2019
+            - DB_USER=provaincluir2019
+            - DB_PASS=provaincluir2019
+            - APP_NAME=AppLog
+            - XDEBUG_ENABLED=true
+        volumes:
+            - .:/var/www/app
+            - ./nginx/99_overrides.ini:/etc/php7/conf.d/99_overrides.ini
+            - ./nginx/nginx.conf:/etc/nginx/sites/laravel.conf
+        ports:
+            - 8888:8080
+        depends_on:
+            - mysql
