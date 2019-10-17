@@ -32,6 +32,8 @@ class LicitacaoLoader implements FixtureInterface
         $this->diaFinal = $diaFim;
         $this->anos = $anos;
     }
+
+    // usando para teste 
     public function getAnos(){
         return $this->anos;
     }
@@ -51,7 +53,7 @@ class LicitacaoLoader implements FixtureInterface
                 if(!$resultado)
                     continue;
                 $lici = $this->instanceateLicitacao($resultado, $municipio);
-                
+                $manager->persist($lici);
             }
         }
         $manager->flush();

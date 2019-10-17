@@ -50,6 +50,6 @@ $loader->addFixture(new MunicipioLoader());
 $loader->addFixture(new BolsaFamiliaLoader($transparencia, [2016, 2017, 2018], [3132404, 3152501]));
 
 // licitações na Unifei nos anos 2016 a 2018 
-$loader->addFixture(new LicitacaoLoader($transparencia, "26261", [2016, 2017, 2018], "01", "31", "3132404"));
+$loader->addFixture(new LicitacaoLoader($transparencia, 26261, [2016, 2017, 2018], "01", "31", "3132404"));
 
 $executor->execute($loader->getFixtures());
