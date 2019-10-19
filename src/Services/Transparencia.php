@@ -17,7 +17,7 @@ class Transparencia
         $this->client = $client;
     }
 
-    public function searchBolsaFamilia(string $yearMonth, string $ibgeCityCode, int $page)
+    public function searchBolsaFamilia(string $yearMonth, string $ibgeCityCode, string $page)
     {
         $response = $this->request('GET', '/bolsa-familia-por-municipio', [
             'mesAno' => $yearMonth,
@@ -33,7 +33,8 @@ class Transparencia
     }
 
     // adicionei aqui a função de consulta de licitações
-    public function searchLicitacao( string $dataInicial, String $dataFinal, int $siafiCityCode, int $page)
+    public function searchLicitacao( string $dataInicial, string $dataFinal, string $siafiCityCode, 
+            string $page)
     {   
         $response = $this->request('GET', '/licitacoes', [
             'dataInicial' => $dataInicial,
@@ -65,7 +66,7 @@ class Transparencia
         try {
             return $this->client->request($method, "/api-de-dados{$path}", $options);
         } catch (ConnectException $e) {
-            throw new Exception('Não foi possível estabelecer conexão com a API');
+            throw new Exception("Não foi possível estabelecer conexão com a API");
         }
     }
 }

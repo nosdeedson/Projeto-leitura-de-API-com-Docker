@@ -9,9 +9,9 @@ use App\Services\Transparencia;
 use DateTime;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use PHPStan\Type\Php\ArrayMapFunctionReturnTypeExtension;
 
 use function DI\string;
+use function GuzzleHttp\json_decode;
 
 class LicitacaoLoader implements FixtureInterface
 {
@@ -27,36 +27,32 @@ class LicitacaoLoader implements FixtureInterface
     {
         $this->transparencia = $t;
         $this->codigoSiafi = $codSiafi;
-        $this->codigoIbge = $codigoIbge;
+        $this->anos = $anos;
         $this->diaInicial = $diaInicio;
         $this->diaFinal = $diaFim;
-        $this->anos = $anos;
-    }
-
-    // usando para teste 
-    public function getAnos(){
-        return $this->anos;
+        $this->codigoIbge = $codigoIbge;
     }
 
     public function load(objectManager $manager)
     {
         $municipio = $manager->getRepository(Municipio::class)->findOneBy([
-            'codigoIbge' => $this->codigoIbge
-        ]);
-        $diasPrimerio = $this->getDatasIniciais();
-        $diasUltimos = $this->getDatasFinais();
-        foreach($diasPrimerio as  $primeiro)
-        {
-            foreach($diasUltimos as $ultimo)
-            {   
-                $resultado = $this->transparencia->searchLicitacao($primeiro, $ultimo, $this->codigoSiafi,1);
-                if(!$resultado)
-                    continue;
-                $lici = $this->instanceateLicitacao($resultado, $municipio);
-                $manager->persist($lici);
-            }
+            'codigoIbge' => $this->codigoIbge]);
+            $diasPrimerio = $this->getDatasIniciais();
+            $diasUltimos = $this->getDatasFinais();
+            
+        for( $i = 0; $i < sizeof($diasPrimerio); $i++){
+            $resultado =$this->transparencia->searchLicitacao($diasPrimerio[$i], $diasUltimos[$i], $this->codigoSiafi,'1');
+            $lici = $this->instanceateLicitacao($resultado, $municipio);
+            //print_r($lici->getMunicipio()->getName()."\n". $lici->getMunicipio()->getCodigoIbge()."\n");
+            // ao executar algumas vezes ocorre erro 
+            // no terminal diz que chamando objeto Municipio nullo
+            // o instaciando com municipio nulo
+            //var_dump($lici); 
+            $manager->persist($lici); 
+            $manager->flush();
         }
-        $manager->flush();
+
+        
     }
 
     /**
@@ -65,7 +61,7 @@ class LicitacaoLoader implements FixtureInterface
      * @return array
      */
 
-    private function getDatasIniciais( )
+    private function getDatasIniciais()
     {
         $anoMesArrayResult = [];
         $anoMesArray = [];
@@ -84,7 +80,7 @@ class LicitacaoLoader implements FixtureInterface
         }
     }
     /**
-     * Returns an array in the format ['31/01/2016', '331/12/2016', ..., '31/01/2018']
+     * Returns an array in the format ['31/01/2016', '31/12/2016', ..., '31/01/2018']
      *
      * @return array
      */
@@ -107,23 +103,38 @@ class LicitacaoLoader implements FixtureInterface
         }
     }
 
-private function instanceateLicitacao(array $resultado, $municipio){
+    private function instanceateLicitacao($resultado, Municipio $municipio)
+    {
         
-        $dataReferencia = $resultado['dataReferencia'];
-        $nomeOrgao = $resultado['nomeOrgao'];
-
-        $codigoOrgao = $resultado['codigoSIAFI'];
-
-        $dataPublicacao = $resultado['dataPublicacao'];
-
-        
-        $dataResultadoCompra = $resultado['dataResultadoCompra'];
-        $objetoLicitacao = $resultado['objetoLiciatacao'];
-        $numeroLicitacao = $resultado['numeroLicitacao'];
-        $responsavelContato = $resultado['responsavelContato'];
-
-        return new Licitacao($municipio, $dataReferencia, $nomeOrgao, $codigoOrgao, $dataPublicacao, 
-            $dataResultadoCompra, $objetoLicitacao, $numeroLicitacao, $responsavelContato);
+        foreach( $resultado as $r){
+            $dataResultadoCompra = DateTime::createFromFormat('d/m/Y', $r['dataResultadoCompra']);
+            $dataReferencia = DateTime::createFromFormat('d/m/Y', $r['dataReferencia']);
+    
+            $dataPublicacao = DateTime::createFromFormat('d/m/Y', $r['dataPublicacao']);
+    
+            // particiona o JSon em objetos menores até o último para atribuir o valor
+            $teste = $r['unidadeGestora'];
+            $t = $teste['orgaoVinculado'];
+            $c = (int) $t['codigoSIAFI'];
+            $n = $t['nome'];
+            //fim
+            $codigoOrgao = (int) $c;
+            $nomeOrgao = $n;
+    
+            // particiona o JSon em objetos menores até o último para atribuir o valor
+            $teste = $r['licitacao'];   
+            // fim
+            $objetoLicitacao = $teste['objeto'];
+            $numeroLicitacao = $teste['numeroProcesso'];
+            $responsavelContato = $teste['contatoResponsavel']; 
+            $li = new Licitacao($municipio, $dataReferencia, $nomeOrgao, $codigoOrgao, $dataPublicacao, 
+                $dataResultadoCompra, $objetoLicitacao, $numeroLicitacao, $responsavelContato);
+            
+            // objeto licitaçao instanciado corretamente municipio não nulo
+            return new Licitacao($municipio, $dataReferencia, $nomeOrgao, $codigoOrgao, $dataPublicacao, 
+               $dataResultadoCompra, $objetoLicitacao, $numeroLicitacao, $responsavelContato);
+        }
+ 
     }
 
     

@@ -34,7 +34,7 @@ class BolsaFamilia implements JsonSerializable
      */
     private $id;
 
-    /**
+    /** 
      * @ManyToOne(targetEntity="Municipio", inversedBy="bolsaFamilia", fetch="EAGER")
      * @var Municipio
      */
@@ -55,7 +55,8 @@ class BolsaFamilia implements JsonSerializable
      */
     private $qtdBeneficiados;
 
-    public function __construct(Municipio $municipio, DateTime $dataReferencia, float $valorTotal, int $qtdBeneficiados)
+    public function __construct(Municipio $municipio, DateTime $dataReferencia, float $valorTotal,
+             int $qtdBeneficiados)
     {
         $this->municipio = $municipio;
         $this->dataReferencia =  $dataReferencia;

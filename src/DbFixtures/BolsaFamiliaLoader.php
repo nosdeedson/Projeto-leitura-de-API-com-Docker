@@ -38,18 +38,19 @@ class BolsaFamiliaLoader implements FixtureInterface
             }
 
             foreach ($anoMesArray as $anoMes) {
-                $result = $this->tranparencia->searchBolsaFamilia($anoMes, (string) $codigoIbge, 1);
+                $result = $this->tranparencia->searchBolsaFamilia($anoMes, (string) $codigoIbge, '1');
 
                 if (!$result) {
                     continue;
                 }
-
                 $bf = $this->instanciateBolsaFamilia($municipio, $result[0]);
+                // a instaciaçao do objeto BolsaFamilia funciona
+                //var_dump($bf);
                 $manager->persist($bf);
+                $manager->flush();
             }
         }
-
-        $manager->flush();
+        
     }
 
     /**
@@ -73,7 +74,8 @@ class BolsaFamiliaLoader implements FixtureInterface
     }
 
     private function instanciateBolsaFamilia(Municipio $m, array $data)
-    {
+    {   
+        
         $dataReferencia = DateTime::createFromFormat('d/m/Y', $data['dataReferencia']);
         if (!$dataReferencia) {
             throw new \Exception('Erro ao tentar criar a data de referência ' . $data['dataReferencia']);
@@ -82,5 +84,6 @@ class BolsaFamiliaLoader implements FixtureInterface
         $qtdBeneficiados = (int) $data['quantidadeBeneficiados'];
 
         return new BolsaFamilia($m, $dataReferencia, $valorTotal, $qtdBeneficiados);
+
     }
 }

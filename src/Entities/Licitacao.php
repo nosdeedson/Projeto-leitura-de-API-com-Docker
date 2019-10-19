@@ -38,9 +38,8 @@ class Licitacao implements JsonSerializable
      */
     private $id;
 
-    /**
+    /** 
     * @ManyToOne(targetEntity="Municipio", inversedBy="licitacoes", fetch="EAGER")
-    * @Column(name="municipio")
     * @var Municipio
     */
     private $municipio;
@@ -71,7 +70,7 @@ class Licitacao implements JsonSerializable
     private $dataResultadoCompra;
 
     /**
-     * @Column(name="objeto_licitacao", length=255)
+     * @Column(name="objeto_licitacao", length=1000)
      */
     private $objetoLicitacao;
 
@@ -84,10 +83,9 @@ class Licitacao implements JsonSerializable
      * @Column(name="responsavel_contato")
      */
     private $responsavelContato;
-
-    public function __construct( Municipio $municipio, DateTime $dataReferencia, String $nomeOrgao,
-    Integer $codigoOrgao, DateTime $dataPublicacao, DateTime $dataResultadoCompra, String $objetoLicitacao,
-    String $numeroLicitacao, String $responsavelContato )
+    public function __construct( Municipio $municipio, DateTime $dataReferencia, string $nomeOrgao,
+    int $codigoOrgao, DateTime $dataPublicacao, DateTime $dataResultadoCompra, string $objetoLicitacao,
+    string $numeroLicitacao, string $responsavelContato )
     {
         $this->municipio= $municipio;
         $this->dataReferencia= $dataReferencia;
@@ -99,24 +97,27 @@ class Licitacao implements JsonSerializable
         $this->numeroLicitacao = $numeroLicitacao;
         $this->responsavelContato =$responsavelContato;
     }
+    public function getMunicipio()
+    {
+        return $this->municipio;
+    }
     
     public function jsonSerialize()
     {
         return
-        [
-            'id' => $this->id,
+        [ 
             'municipio' => $this->municipio,
-            'dataReferencia' => $this->dataReferencia->format('d,m,y'),
-            'nomeOrgao' => $this->nomeOrgao,
-            'codigoOrgao' => $this->codigoOrgao,
-            'dataPublicacao' => $this->dataPublicacao->format('d,m,y'),
-            'dataResultado_compra' => $this->dataResultadoCompra->format('d,m,y'),
-            'objetoLicitacao' => $this->objetoLicitacao,
-            'numeroLicitacao' => $this->numeroLicitacao,
-            'responsavelContato' => $this->responsavelContato
+            'data_referencia' => $this->dataReferencia->format('d/mY'), 
+            'nome_orgao' => $this->nomeOrgao,
+            'codigo_orgao' => $this->codigoOrgao,
+            'data_publicacao' => $this->dataPublicacao->format('d/mY'),
+            'data_resultado_compra' =>  $this->dataResultadoCompra->format('d/mY'),
+            'objeto_licitacao' => $this->objetoLicitacao,
+            'numero_licitacao' => $this->numeroLicitacao,
+            'responsavel_contato' => $this->responsavelContato
         ];
     }
-
+ 
 
 }// fim classe
 

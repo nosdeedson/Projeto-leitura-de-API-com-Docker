@@ -47,12 +47,14 @@ class Municipio implements JsonSerializable
      */
     private $nomeCidade;
 
-    /**
+    /** 
+     *
      * @OneToMany(targetEntity="BolsaFamilia", mappedBy="municipio")
      */
     private $bolsaFamilia;
 
-    /**
+    /** 
+     * 
      * @OneToMany(targetEntity="Licitacao", mappedBy="municipio")
      */
     private $licitacoes;
@@ -68,11 +70,14 @@ class Municipio implements JsonSerializable
      *
      * Ex: $municipio->codigoIbg
      */
-    public function __get($name)
+    public function getName()
     {
-        return $this->$name;
+        return $this->nomeCidade;
     }
-
+    public function getCodigoIbge()
+    {
+        return $this->codigoIbge;
+    }
     public function jsonSerialize()
     {
         return [
