@@ -6,6 +6,7 @@ use App\Actions\BolsaFamilia\BolsaFamiliaMes;
 use App\Actions\Licitacao\LicitacaoAction;
 use App\Actions\Municipio;
 use App\Actions\Root;
+use App\Services\Db\Licitacao;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
@@ -27,9 +28,10 @@ return function (App $app) {
         $group->group('/{codigoIbge:[0-9]+}', function(Group $group) {
             // pode ser acessado via GET http://localhost:8888/municipio/{codigoIbge}/bolsa-familia
             $group->get('/bolsa-familia', BolsaFamiliaMes::class);
+        });
 
-            // pode ser acessado via GET http://localhost:8888/municipio/{codigoIbge}/licitacoes
-            $group->get('/licitacoes',LicitacaoAction::class );
+        $group->get('/{codigoIbge:[0-9]+}',function(Group $group){
+            $group->get('/licitacoes', LicitacaoAction::class);
         });
     });
 };

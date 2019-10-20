@@ -66,7 +66,7 @@ class Licitacao implements JsonSerializable
     private $dataResultadoCompra;
 
     /**
-     * @Column(name="objeto_licitacao", length=2000)
+     * @Column(name="objeto_licitacao", length=1500)
      */
     private $objetoLicitacao;
 

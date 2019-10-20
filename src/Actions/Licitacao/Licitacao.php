@@ -20,12 +20,11 @@ class LicitacaoAction extends Action
         $this->licitacaoService = $licitacaoService;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $nomeCidade)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, string $codigoIbge)
     {
         $params = $this->validate($request->getQueryParams());
-        $resultado = $this->licitacaoService->findBetweenDates($params['data_inicial'], $params['data_final'], $nomeCidade);
-        
-
+        $resultado = $this->licitacaoService->findBetweenDates($params['data_inicial'], $params['data_final'], $codigoIbge);
+    
         return $this->toJson($response, $resultado);
     }
 
