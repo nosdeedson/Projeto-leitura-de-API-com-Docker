@@ -42,17 +42,26 @@ class LicitacaoLoader implements FixtureInterface
             
         for( $i = 0; $i < sizeof($diasPrimerio); $i++){
             $resultado =$this->transparencia->searchLicitacao($diasPrimerio[$i], $diasUltimos[$i], $this->codigoSiafi,'1');
+            if( !$resultado)
+            {
+                //print_r("pesquisa retornou nulo!!");
+                continue;
+            }
             $lici = $this->instanceateLicitacao($resultado, $municipio);
+            if( !$lici)
+            {
+                //print_r("objeto não foi instanciado!!");
+                continue;
+            }
             //print_r($lici->getMunicipio()->getName()."\n". $lici->getMunicipio()->getCodigoIbge()."\n");
             // ao executar algumas vezes ocorre erro 
             // no terminal diz que chamando objeto Municipio nullo
             // o instaciando com municipio nulo
             //var_dump($lici); 
             $manager->persist($lici); 
-            $manager->flush();
+           
         }
-
-        
+        $manager->flush(); 
     }
 
     /**

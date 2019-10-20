@@ -25,7 +25,7 @@ class BolsaFamilia
      * @param string $codigoIbge
      * @return array
      */
-    public function findBetweenDates(\DateTimeInterface $dataInicial, \DateTimeInterface $dataFinal, string $codigoIbge)
+    public function findBetweenDates( \DateTimeInterface $dataInicial, \DateTimeInterface $dataFinal, string $codigoIbge)
     {
         $qb = $this->em->createQueryBuilder();
 

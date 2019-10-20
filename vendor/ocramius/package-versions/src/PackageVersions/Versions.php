@@ -108,7 +108,7 @@ final class Versions
   'symfony/polyfill-ctype' => 'v1.12.0@550ebaac289296ce228a706d0867afc34687e3f4',
   'theseer/tokenizer' => '1.1.3@11336f6f84e16a720dae9d8e6ed5019efa85a0f9',
   'webmozart/assert' => '1.5.0@88e6d84706d09a236046d686bbea96f07b3a34f4',
-  'marciodojr/provaincluir2019' => 'dev-master@0a2397f719ec3775ab89e8ae839f70dc58410c4a',
+  'marciodojr/provaincluir2019' => 'dev-master@bc4de14b95606b01ae7c4ea27324284bd145d0d2',
 );
 
     private function __construct()

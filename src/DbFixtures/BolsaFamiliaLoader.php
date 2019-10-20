@@ -27,7 +27,7 @@ class BolsaFamiliaLoader implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $anoMesArray = $this->getAnoMes();
-        
+
         foreach ($this->codigosIbge as $codigoIbge) {
             $municipio = $manager->getRepository(Municipio::class)->findOneBy([
                 'codigoIbge' => $codigoIbge
@@ -38,19 +38,19 @@ class BolsaFamiliaLoader implements FixtureInterface
             }
 
             foreach ($anoMesArray as $anoMes) {
-                $result = $this->tranparencia->searchBolsaFamilia($anoMes, (string) $codigoIbge, '1');
-
+                $result = $this->tranparencia->searchBolsaFamilia($anoMes, (string) $codigoIbge, 1);
+                
                 if (!$result) {
                     continue;
                 }
+
                 $bf = $this->instanciateBolsaFamilia($municipio, $result[0]);
-                // a instaciaçao do objeto BolsaFamilia funciona
                 //var_dump($bf);
                 $manager->persist($bf);
-                $manager->flush();
             }
         }
-        
+
+        $manager->flush();
     }
 
     /**
@@ -62,8 +62,7 @@ class BolsaFamiliaLoader implements FixtureInterface
     {
         $anoMesArrayResult = [];
         foreach ($this->anos as $ano) {
-            $anoMesArray = array_map(function ($mes) use ($ano) 
-            {
+            $anoMesArray = array_map(function ($mes) use ($ano) {
                 return sprintf('%s%s', $ano, str_pad((string) $mes, 2, '0', STR_PAD_LEFT));
             }, range(1, 12, 1));
 
@@ -74,8 +73,8 @@ class BolsaFamiliaLoader implements FixtureInterface
     }
 
     private function instanciateBolsaFamilia(Municipio $m, array $data)
-    {   
-        
+    {
+        //var_dump($data);
         $dataReferencia = DateTime::createFromFormat('d/m/Y', $data['dataReferencia']);
         if (!$dataReferencia) {
             throw new \Exception('Erro ao tentar criar a data de referência ' . $data['dataReferencia']);
@@ -84,6 +83,6 @@ class BolsaFamiliaLoader implements FixtureInterface
         $qtdBeneficiados = (int) $data['quantidadeBeneficiados'];
 
         return new BolsaFamilia($m, $dataReferencia, $valorTotal, $qtdBeneficiados);
-
+        
     }
 }

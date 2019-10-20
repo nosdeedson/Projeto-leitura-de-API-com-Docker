@@ -18,30 +18,26 @@ use JsonSerializable;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 
-
 /**
  * @Table(
- *      name="licitacao",
- *      indexes={
- *          @Index(name="municipio_idx", columns={"municipio"}),
- *          @Index(name="id_idx", columns={"id"}),
- *      }
+ *      name="licitacao"
  * )
  * @Entity
  */
+
 class Licitacao implements JsonSerializable
 {
-   /**
+    /**
      * @Id
      * @Column(name="id", type="integer")
      * @GeneratedValue
      */
     private $id;
 
-    /** 
-    * @ManyToOne(targetEntity="Municipio", inversedBy="licitacoes", fetch="EAGER")
-    * @var Municipio
-    */
+    /**
+     * @ManyToOne(targetEntity="Municipio", inversedBy="licitacoes", fetch="EAGER")
+     * @var Municipio
+     */
     private $municipio;
 
     /**
@@ -70,7 +66,7 @@ class Licitacao implements JsonSerializable
     private $dataResultadoCompra;
 
     /**
-     * @Column(name="objeto_licitacao", length=1000)
+     * @Column(name="objeto_licitacao", length=2000)
      */
     private $objetoLicitacao;
 

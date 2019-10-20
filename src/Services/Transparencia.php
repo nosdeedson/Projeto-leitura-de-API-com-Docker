@@ -17,7 +17,7 @@ class Transparencia
         $this->client = $client;
     }
 
-    public function searchBolsaFamilia(string $yearMonth, string $ibgeCityCode, string $page)
+    public function searchBolsaFamilia(string $yearMonth, string $ibgeCityCode, int $page)
     {
         $response = $this->request('GET', '/bolsa-familia-por-municipio', [
             'mesAno' => $yearMonth,
