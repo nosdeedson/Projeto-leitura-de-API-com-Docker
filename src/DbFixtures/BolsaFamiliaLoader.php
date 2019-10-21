@@ -46,11 +46,11 @@ class BolsaFamiliaLoader implements FixtureInterface
 
                 $bf = $this->instanciateBolsaFamilia($municipio, $result[0]);
                 //var_dump($bf);
-                $manager->persist($bf);
+                //$manager->persist($bf);
             }
         }
 
-        $manager->flush();
+        //$manager->flush();
     }
 
     /**

@@ -103,11 +103,11 @@ class Licitacao implements JsonSerializable
         return
         [ 
             'municipio' => $this->municipio,
-            'data_referencia' => $this->dataReferencia->format('d/mY'), 
+            'data_referencia' => $this->dataReferencia->format('d/m/Y'), 
             'nome_orgao' => $this->nomeOrgao,
             'codigo_orgao' => $this->codigoOrgao,
-            'data_publicacao' => $this->dataPublicacao->format('d/mY'),
-            'data_resultado_compra' =>  $this->dataResultadoCompra->format('d/mY'),
+            'data_publicacao' => $this->dataPublicacao->format('d/m/Y'),
+            'data_resultado_compra' =>  $this->dataResultadoCompra->format('d/m/Y'),
             'objeto_licitacao' => $this->objetoLicitacao,
             'numero_licitacao' => $this->numeroLicitacao,
             'responsavel_contato' => $this->responsavelContato

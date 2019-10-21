@@ -25,17 +25,18 @@ class Licitacao
      * @param string $codigoIbge
      * @return array
      */
-    public function findBetweenDates(\DateTimeInterface $dataInicial, \DateTimeInterface $dataFinal, $codigoIbge)
+    public function findBetweenDates(\DateTimeInterface $dataInicial, 
+    \DateTimeInterface $dataFinal, $codigoIbge)
     {
         $qb = $this->em->createQueryBuilder();
 
         $results = $qb
-            ->select('b')
-            ->from(LicitacaoEntity::class, 'b')
-            ->join('b.codigoIbge', 'm')
-            ->add('where', 'm.codigoIbge = :codigoIbge and b.dataReferencia between :startReferenceDate and :endReferenceDate')
+            ->select('l')
+            ->from(LicitacaoEntity::class, 'l')
+            ->join('l.municipio', 'm')
+            ->add('where', 'm.codigoIbge = :codigoIbge and l.dataReferencia between :startReferenceDate and :endReferenceDate')
             ->setParameters([
-                'nomeCidade' => $codigoIbge,
+                'codigoIbge' => $codigoIbge,
                 'startReferenceDate' => $dataInicial,
                 'endReferenceDate' => $dataFinal,
             ])

@@ -30,7 +30,7 @@ return function (App $app) {
             $group->get('/bolsa-familia', BolsaFamiliaMes::class);
         });
 
-        $group->get('/{codigoIbge:[0-9]+}',function(Group $group){
+        $group->group('/{codigoIbge:[0-9]+}',function(Group $group){
             $group->get('/licitacoes', LicitacaoAction::class);
         });
     });

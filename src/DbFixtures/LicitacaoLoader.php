@@ -47,7 +47,7 @@ class LicitacaoLoader implements FixtureInterface
                 //print_r("pesquisa retornou nulo!!");
                 continue;
             }
-            $lici = $this->instanceateLicitacao($resultado, $municipio);
+            $lici = $this->instanceateLicitacao($resultado[0], $municipio);
             if( !$lici)
             {
                 //print_r("objeto não foi instanciado!!");
@@ -112,17 +112,17 @@ class LicitacaoLoader implements FixtureInterface
         }
     }
 
-    private function instanceateLicitacao($resultado, Municipio $municipio)
+    private function instanceateLicitacao(array $resultado, Municipio $municipio)
     {
         
-        foreach( $resultado as $r){
-            $dataResultadoCompra = DateTime::createFromFormat('d/m/Y', $r['dataResultadoCompra']);
-            $dataReferencia = DateTime::createFromFormat('d/m/Y', $r['dataReferencia']);
+        //foreach( $resultado as $r){
+            $dataResultadoCompra = DateTime::createFromFormat('d/m/Y', $resultado['dataResultadoCompra']);
+            $dataReferencia = DateTime::createFromFormat('d/m/Y', $resultado['dataReferencia']);
     
-            $dataPublicacao = DateTime::createFromFormat('d/m/Y', $r['dataPublicacao']);
+            $dataPublicacao = DateTime::createFromFormat('d/m/Y', $resultado['dataPublicacao']);
     
             // particiona o JSon em objetos menores até o último para atribuir o valor
-            $teste = $r['unidadeGestora'];
+            $teste = $resultado['unidadeGestora'];
             $t = $teste['orgaoVinculado'];
             $c = (int) $t['codigoSIAFI'];
             $n = $t['nome'];
@@ -131,7 +131,7 @@ class LicitacaoLoader implements FixtureInterface
             $nomeOrgao = $n;
     
             // particiona o JSon em objetos menores até o último para atribuir o valor
-            $teste = $r['licitacao'];   
+            $teste = $resultado['licitacao'];   
             // fim
             $objetoLicitacao = $teste['objeto'];
             $numeroLicitacao = $teste['numeroProcesso'];
@@ -142,7 +142,7 @@ class LicitacaoLoader implements FixtureInterface
             // objeto licitaçao instanciado corretamente municipio não nulo
             return new Licitacao($municipio, $dataReferencia, $nomeOrgao, $codigoOrgao, $dataPublicacao, 
                $dataResultadoCompra, $objetoLicitacao, $numeroLicitacao, $responsavelContato);
-        }
+       // }
  
     }
 
